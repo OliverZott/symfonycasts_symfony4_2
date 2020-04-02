@@ -1,19 +1,11 @@
 # Stellar Development with Symfony 4
+https://symfonycasts.com/screencast/symfony-fundamentals
 
-Well hi there! This repository holds the code and script
-for the [Stellar Development with Symfony 4](https://knpuniversity.com/screencast/symfony4) course on KnpUniversity.
+[Stellar Development with Symfony 4](https://knpuniversity.com/screencast/symfony4)
 
 ## Setup
-
-If you've just downloaded the code, congratulations!!
-
-To get it working, follow these steps:
-
-**Download Composer dependencies**
-
-Make sure you have [Composer installed](https://getcomposer.org/download/)
+**Download Composer dependencies** (Make sure  [Composer is installed](https://getcomposer.org/download/))
 and then run:
-
 ```
 composer install
 ```
@@ -22,41 +14,64 @@ You may alternatively need to run `php composer.phar install`, depending
 on how you installed Composer.
 
 **Start the built-in web server**
-
-You can use Nginx or Apache, but the built-in web server works
-great:
-
 ```
 php bin/console server:run
 ```
 
 Now check out the site at `http://localhost:8000`
 
-Have fun!
+## Services
+**Services**...Objects that do work
 
-## Somebody Has To
+**Bundles** ...Symfonys Plugin system, providing Services
 
-Somebody has to go polish the stars,
-They're looking a little bit dull.
-Somebody has to go polish the stars,
-For the eagles and starlings and gulls
-Have all been complaining they're tarnished and worn,
-They say they want new ones we cannot afford.
-So please get your rags
-And your polishing jars,
-Somebody has to go polish the stars.
++ Services are stored in a **Container** Object
++ Services have internal names (e.g. "routes")
++ Bundles put services in container (`config/bundles.php`)
++ Symfony is "collection of services"
 
-Shel Silverstein
 
-## Have Ideas, Feedback or an Issue?
 
-If you have suggestions or questions, please feel free to
-open an issue on this repository or comment on the course
-itself. We're watching both :).
+**Check** / **Show** installed bundles:
+```angular2html
+~$ composer show
 
-## Thanks!
+~$ php bin/console debug:config
+~$ php bin/console config:dump-reference
+```
 
-And as always, thanks so much for your support and letting
-us do what we love!
+**Update** all bundles:
+```angular2html
+~$ composer require
+```
 
-<3 Your friends at KnpUniversity
+**Security** check:
+```angular2html
+~$ symfony security:check
+~$ composer install
+```
+
+## Markdown-Bundle
+
+`composer require knplabs/knp-markdown-bundle`
+
++ **ArticleController.php**:
+    + `public function show(..., MarkdownInterface $markdown) {...`
+    + `$markdown->transform()`
+
++ **show.html.twig**
+    + `{{ articleContent|raw }}`  ... 'raw' because XSS attacks prevented
+    
+## Cache Service
+https://symfony.com/doc/current/cache.html  
+https://symfony.com/doc/current/components/cache.html   
+https://www.php-fig.org/psr/psr-6/
+
+`cache.app` ...internal id of the cache-service (see auto-wiring)
+
++ **ArticleController.php**:
+    + `public function show(..., AdapterInterface $cache) {...`
+    + `$cache->getItem()`
+
++ **show.html.twig**
+    + ``    

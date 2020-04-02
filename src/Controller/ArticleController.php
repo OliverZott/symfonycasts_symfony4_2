@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Console\Descriptor\MarkdownDescriptor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -25,9 +26,10 @@ class ArticleController extends AbstractController
      * @Route("/news/{slug}", name="article_show")
      * @param $slug
      * @param MarkdownInterface $markdown
+     * @param AdapterInterface $cache
      * @return Response
      */
-    public function show($slug, MarkdownInterface $markdown)
+    public function show($slug, MarkdownInterface $markdown, AdapterInterface $cache)
     {
         $comments = [
             'I ate a normal rock once. It did NOT taste like bacon!',
@@ -40,7 +42,7 @@ class ArticleController extends AbstractController
 Spicy jalapeno **bacon** ipsum dolor amet tongue chuck drumstick rump. Ground round boudin ham hock, 
 alcatra sausage bacon landjaeger [pastrami](https://baconipsum.com). Burgdoggen venison turkey picanha. Cupim turducken shank short ribs 
 tail pork loin short loin, filet mignon corned beef andouille ground round. Meatball pancetta shank, 
-kielbasa strip steak pork bacon bresaola picanha leberkas sausage cow kevin.
+**kielbasa** strip steak ***pork*** bacon bresaola picanha leberkas sausage cow kevin.
 
 Spicy jalapeno **bacon** ipsum dolor amet tongue chuck drumstick rump. Ground round boudin ham hock, 
 alcatra sausage bacon landjaeger [pastrami](https://baconipsum.com). Burgdoggen venison turkey picanha. Cupim turducken shank short ribs 
@@ -48,7 +50,16 @@ tail pork loin short loin, filet mignon corned beef andouille ground round. Meat
 kielbasa strip steak pork bacon bresaola picanha leberkas sausage cow kevin.
 EOF;
 
-        $articleContent = $markdown->transform($articleContent);
+
+        // Cache
+        $item = $cache->getItem('markdown_'.md5($articleContent));
+        if(!$item->isHit())
+        {
+            $item->set($markdown->transform($articleContent));
+            $cache->save($item);
+        }
+        $articleContent = $item->get();
+
 
         return $this->render('article/show.html.twig', [
             'title' => ucwords(str_replace('-', ' ', $slug)),
