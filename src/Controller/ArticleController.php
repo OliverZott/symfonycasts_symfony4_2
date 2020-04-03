@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection AnnotationDeprecatedInspection */
 
 namespace App\Controller;
 
@@ -14,6 +14,9 @@ use Twig\Environment;
 
 class ArticleController extends AbstractController
 {
+
+
+
     /**
      * @Route("/", name="app_homepage")
      */
@@ -22,12 +25,15 @@ class ArticleController extends AbstractController
         return $this->render('article/homepage.html.twig');
     }
 
+
+
     /**
      * @Route("/news/{slug}", name="article_show")
      * @param $slug
      * @param MarkdownInterface $markdown
      * @param AdapterInterface $cache
      * @return Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function show($slug, MarkdownInterface $markdown, AdapterInterface $cache)
     {
@@ -39,7 +45,7 @@ class ArticleController extends AbstractController
 
         // Heredoc-String
         $articleContent = <<<EOF
-Spicy jalapeno **bacon** ipsum dolor amet tongue chuck drumstick rump. Ground round boudin ham hock, 
+Spicy jalapeno **bacon** ipsum dolor *amet* tongue chuck drumstick rump. Ground round boudin ham hock, 
 alcatra sausage bacon landjaeger [pastrami](https://baconipsum.com). Burgdoggen venison turkey picanha. Cupim turducken shank short ribs 
 tail pork loin short loin, filet mignon corned beef andouille ground round. Meatball pancetta shank, 
 **kielbasa** strip steak ***pork*** bacon bresaola picanha leberkas sausage cow kevin.
@@ -50,7 +56,6 @@ tail pork loin short loin, filet mignon corned beef andouille ground round. Meat
 kielbasa strip steak pork bacon bresaola picanha leberkas sausage cow kevin.
 EOF;
 
-
         // Cache
         $item = $cache->getItem('markdown_'.md5($articleContent));
         if(!$item->isHit())
@@ -59,7 +64,7 @@ EOF;
             $cache->save($item);
         }
         $articleContent = $item->get();
-
+        dump($markdown);die;
 
         return $this->render('article/show.html.twig', [
             'title' => ucwords(str_replace('-', ' ', $slug)),
@@ -69,8 +74,13 @@ EOF;
         ]);
     }
 
+
+
     /**
      * @Route("/news/{slug}/heart", name="article_toggle_heart", methods={"POST"})
+     * @param $slug
+     * @param LoggerInterface $logger
+     * @return JsonResponse
      */
     public function toggleArticleHeart($slug, LoggerInterface $logger)
     {
