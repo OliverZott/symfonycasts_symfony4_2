@@ -73,5 +73,27 @@ https://www.php-fig.org/psr/psr-6/
     + `public function show(..., AdapterInterface $cache) {...`
     + `$cache->getItem()`
 
-+ **show.html.twig**
-    + ``    
+## Configuration (Bundles
+Check Bundles:
+```angular2html
+~$ php bin/console debug:config
+```
+#### Examples: 
+**KnpMarkdownBundle**
++ dump bundle **config** ... `~$ ./bin/console config:dump KnpMarkdownBundle`
++ doc: https://github.com/KnpLabs/KnpMarkdownBundle
++ new file: 
+    + `config/packages/knp_markdown.yaml` 
+    + copy text for "light" version from docs
++ check `        dump($markdown);die;
+
+
+**TwigBundle**
++ dump bundle **config** ... `~$ ./bin/console config:dump KnpMarkdownBundle`
++ doc: https://github.com/KnpLabs/KnpMarkdownBundle
++ new file: 
+    + `config/packages/knp_markdown.yaml` 
+    + copy text for "light" version from docs
++ check `        dump($markdown);die;
+
+## debug:container & Cache Config
