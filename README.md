@@ -30,15 +30,29 @@ Now check out the site at `http://localhost:8000`
 + Bundles put services in container (`config/bundles.php`)
 + Symfony is "collection of services"
 
+`config/bundles.php` = `php bin/console debug:config`
 
-
-**Check** / **Show** installed bundles:
+**Check** / **Show** installed / specific bundles:
 ```angular2html
 ~$ composer show
 
+~$ php bin/console debug:
+
+
 ~$ php bin/console debug:config
 ~$ php bin/console config:dump-reference
+
+~$ ./bin/console config:dump twig
+~$ php bin/console debug:config twig
 ```
+
+
+Show (all) Services in the **Container**
+```angular2html
+~$ ./bin/console debug:container 
+~$ ./bin/console debug:container --show-private
+```
+
 
 **Update** all bundles:
 ```angular2html
@@ -73,10 +87,11 @@ https://www.php-fig.org/psr/psr-6/
     + `public function show(..., AdapterInterface $cache) {...`
     + `$cache->getItem()`
 
-## Configuration (Bundles
+## Configuration (Bundles)
 Check Bundles:
 ```angular2html
 ~$ php bin/console debug:config
+~$ ./bin/console config:dump twig
 ```
 #### Examples: 
 **KnpMarkdownBundle**
@@ -97,3 +112,57 @@ Check Bundles:
 + check `        dump($markdown);die;
 
 ## debug:container & Cache Config
+**Service ID** to a specific **service** in a **Container**.
+
++ `service: markdown.parser.light` in  **knp_markdown.yaml**
++ check: `./bin/console debug:autowiring`   
+    + **MarkdownInterface** is now alias to `markdown.parser.light`     
+
+All Services:
+```angular2html
+~$ ./bin/console debug:container --show-private
+```
+Most important Services:
+```angular2html
+~$ ./bin/console debug:autowiring
+```
+
+
+#### Example: Cache Service
+
+See cache section under:
+```angular2html
+~$ ./bin/console config:dump framework
+~$ ./bin/console debug:config framework
+```
+
+## Environments & Config Files
+Configuration: 
++ log-behavior: log errors / all; where ti log?
++ Database credentials 
+
+### Environments:
+2 Environments in Symfony: **dev** and **prod**
+    
+    
+    
+## Remarks
++ Container is full of Services
++ Each Service has ID
++ *debug:autowiring* shows most important services
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

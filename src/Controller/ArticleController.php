@@ -64,7 +64,7 @@ EOF;
             $cache->save($item);
         }
         $articleContent = $item->get();
-        dump($markdown);die;
+        //dump($cache);die;
 
         return $this->render('article/show.html.twig', [
             'title' => ucwords(str_replace('-', ' ', $slug)),
