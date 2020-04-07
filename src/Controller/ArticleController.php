@@ -33,7 +33,6 @@ class ArticleController extends AbstractController
      * @param MarkdownInterface $markdown
      * @param AdapterInterface $cache
      * @return Response
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function show($slug, MarkdownInterface $markdown, AdapterInterface $cache)
     {
@@ -55,6 +54,8 @@ alcatra sausage bacon landjaeger [pastrami](https://baconipsum.com). Burgdoggen 
 tail pork loin short loin, filet mignon corned beef andouille ground round. Meatball pancetta shank, 
 kielbasa strip steak pork bacon bresaola picanha leberkas sausage cow kevin.
 EOF;
+
+        // dump($cache);die;
 
         // Cache
         $item = $cache->getItem('markdown_'.md5($articleContent));

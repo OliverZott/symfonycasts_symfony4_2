@@ -1,4 +1,4 @@
-# Stellar Development with Symfony 4
+# Symfony 4 -  Services & Bundles (Configuration, ....)
 https://symfonycasts.com/screencast/symfony-fundamentals
 
 [Stellar Development with Symfony 4](https://knpuniversity.com/screencast/symfony4)
@@ -147,15 +147,44 @@ See cache section under:
 ```
 
 ## Environments & Config Files  <a name="environments"></a>
-Configuration: 
-+ log-behavior: log errors / all; where ti log?
-+ Database credentials 
++ Configuration: 
+    + log-behavior: log errors / all; where ti log?
+    + Database credentials 
++ Config files are in `/config/`
+    + `/config/packages` ...Service configuration files
+    +  `/config/routes` ...Routes configuration files
++ Environments in Symfony (in `/config/packages` ): 
+    + **dev** ... extensive error-logs (everything for development)
+    + **prod** ...optimized for speed
+    + **test** ...automated tests
 
-### Environments:
-2 Environments in Symfony: **dev** and **prod**
++ Structure
+    + `/public/index.php` (**Front-Controller**) 
+        + APP_ENV environment-variable ...stores config values!
+        + Used in `new Kernel(...`
+    + `/.env` ...APP_ENV variable is set: `APP_ENV=dev`
+    + `/src/Kernel.php`  ...important methods:
+        + `registerBundles()` ... used `/config/bundles.php`
+        + `configureContainer(...` ...configures Services / order important for **overwriting**!!! Compare: `/config/packages/routing.yaml` - `/config/packages/dev/routing.yaml` and `php bin/console debug:config framework`
+        + `configureRoutes(` ...
     
-    
-    
+
+## prod Environment
+Difference **prod** - **dev**: in prod internal symfony cache is NOT automatically rebuild (speed reasons!)
++ `.env`  change: `APP_ENV=prod`
++ `~$ ./bin/console cache:clear` (might be not necessary)
+
+Override Cache:
++ `/config/packages/dev/` ...new file `blub_test.yaml` and add:
+    ```angular2html
+    framework:
+        cache:
+            app: cache.adapter.filesystem 
+    ```
++ `dump($cache);die;` in **ArticleController.php**
+    + F5 -> `#pool: Symfony\Component\Cache\Adapter\FilesystemAdapter `
++ `.env`  change: `APP_ENV=prod`
+
 ## Remarks
 + Container is full of Services
 + Each Service has ID
