@@ -3,7 +3,17 @@ https://symfonycasts.com/screencast/symfony-fundamentals
 
 [Stellar Development with Symfony 4](https://knpuniversity.com/screencast/symfony4)
 
-## Setup
+## Table of Contents
+1. [Setup](#setup)
+2. [Services](#services)
+3. [Markdown-Bundle](#markdown)
+4. [Cache Service](#cache)
+5. [Configuration (Bundles)](#config)
+6. [debug:container & Cache Config](#debug)
+7. [Environments & Config Files](#environments)
+
+
+## Setup <a name="setup"></a>
 **Download Composer dependencies** (Make sure  [Composer is installed](https://getcomposer.org/download/))
 and then run:
 ```
@@ -20,7 +30,7 @@ php bin/console server:run
 
 Now check out the site at `http://localhost:8000`
 
-## Services
+## Services <a name="services"></a>
 **Services**...Objects that do work
 
 **Bundles** ...Symfonys Plugin system, providing Services
@@ -65,7 +75,7 @@ Show (all) Services in the **Container**
 ~$ composer install
 ```
 
-## Markdown-Bundle
+## Markdown-Bundle  <a name="markdown"></a>
 
 `composer require knplabs/knp-markdown-bundle`
 
@@ -76,7 +86,7 @@ Show (all) Services in the **Container**
 + **show.html.twig**
     + `{{ articleContent|raw }}`  ... 'raw' because XSS attacks prevented
     
-## Cache Service
+## Cache Service <a name="cache"></a>
 https://symfony.com/doc/current/cache.html  
 https://symfony.com/doc/current/components/cache.html   
 https://www.php-fig.org/psr/psr-6/
@@ -87,7 +97,7 @@ https://www.php-fig.org/psr/psr-6/
     + `public function show(..., AdapterInterface $cache) {...`
     + `$cache->getItem()`
 
-## Configuration (Bundles)
+## Configuration (Bundles)  <a name="config"></a>
 Check Bundles:
 ```angular2html
 ~$ php bin/console debug:config
@@ -111,7 +121,7 @@ Check Bundles:
     + copy text for "light" version from docs
 + check `        dump($markdown);die;
 
-## debug:container & Cache Config
+## debug:container & Cache Config <a name="debug"></a>
 **Service ID** to a specific **service** in a **Container**.
 
 + `service: markdown.parser.light` in  **knp_markdown.yaml**
@@ -136,7 +146,7 @@ See cache section under:
 ~$ ./bin/console debug:config framework
 ```
 
-## Environments & Config Files
+## Environments & Config Files  <a name="environments"></a>
 Configuration: 
 + log-behavior: log errors / all; where ti log?
 + Database credentials 
